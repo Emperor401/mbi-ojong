@@ -135,17 +135,17 @@ export default function Hero() {
 
               <div ref={headingRef} className="mb-8 md:mb-10">
                 <div className="overflow-hidden">
-                  <span className="reveal-line block font-bebas text-white text-[10vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
+                  <span className="reveal-line block font-bebas text-white text-[8.5vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
                     Detecting financial crime,
                   </span>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="reveal-line block font-bebas text-white text-[10vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
+                  <span className="reveal-line block font-bebas text-white text-[8.5vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
                     safeguarding businesses
                   </span>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="reveal-line block font-bebas text-white text-[10vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
+                  <span className="reveal-line block font-bebas text-white text-[8.5vw] sm:text-[7vw] md:text-[4.4vw] lg:text-[3.4vw] leading-[1.05] tracking-tight">
                     that demand{" "}
                     <span className="font-script italic text-white normal-case">integrity</span>.
                   </span>
@@ -166,7 +166,7 @@ export default function Hero() {
           </div>
 
           {/* Portrait — breaks out of the blob, positioned outside the clipped card */}
-          <div className="px-6 sm:px-10 md:px-0 -mt-6 md:mt-0 md:absolute md:right-12 md:-top-12 md:bottom-0 md:w-[36%] flex items-end justify-center">
+          <div className="px-6 sm:px-10 md:px-0 -mt-14 md:mt-0 md:absolute md:right-12 md:-top-12 md:bottom-0 md:w-[36%] flex items-end justify-center">
             <div
               ref={imageRef}
               className="relative w-[70%] md:w-full aspect-[3/4] md:h-[calc(100%+3rem)]"
@@ -174,7 +174,7 @@ export default function Hero() {
               <img
                 src="/image5.jpeg"
                 alt="Jiles Agbor Mbi Ojong"
-                className="w-full h-full object-cover object-top grayscale contrast-125 rounded-t-[80px] md:rounded-t-[170px] rounded-b-[24px]"
+                className="w-full h-full object-cover object-top rounded-t-[80px] md:rounded-t-[170px] rounded-b-[24px]"
               />
               {/* color motion streak */}
               <div

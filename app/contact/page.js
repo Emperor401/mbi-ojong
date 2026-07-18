@@ -25,6 +25,7 @@ export default function ContactPage() {
     phone: "",
     service: "",
     message: "",
+    "bot-field": "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -89,9 +90,23 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const encodeForm = (data) =>
+    Object.keys(data)
+      .map(
+        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
+      )
+      .join("&");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (sending) return;
+
+    if (formData["bot-field"]) return;
+
+    if (!formData.name.trim() || !formData.email.trim()) {
+      setError("Name and email are required.");
+      return;
+    }
 
     setError("");
     setSending(true);
@@ -99,16 +114,14 @@ export default function ContactPage() {
     gsap.to(".submit-btn", { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encodeForm({ "form-name": "contact", ...formData }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "Something went wrong. Please try again.");
+        throw new Error("Something went wrong. Please try again.");
       }
 
       setSubmitted(true);
@@ -217,7 +230,24 @@ export default function ContactPage() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-5">
+              <form
+                name="contact"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-4 md:gap-5"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <input
+                  type="text"
+                  name="bot-field"
+                  value={formData["bot-field"]}
+                  onChange={handleChange}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
 
                 {/* Name */}
                 <div className="form-field flex flex-col gap-2">

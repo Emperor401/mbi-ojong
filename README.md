@@ -15,7 +15,7 @@ Personal portfolio and consulting site for **Jiles Agbor Mbi Ojong**, an AML Inv
 - [Next.js](https://nextjs.org) (App Router)
 - [Tailwind CSS](https://tailwindcss.com)
 - [GSAP](https://gsap.com) for animation
-- [Nodemailer](https://nodemailer.com) for contact form 
+- [Netlify Forms](https://docs.netlify.com/manage/forms/setup/) for contact form submissions (no backend/API route)
 
 
 

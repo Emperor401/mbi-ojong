@@ -7,55 +7,35 @@ export default function PageTransition({ children }) {
   const pathname = usePathname();
   const overlayRef = useRef(null);
   const contentRef = useRef(null);
-  const markRef = useRef(null);
+  const groupRef = useRef(null);
   const brandMaskRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const barFillRef = useRef(null);
-  const counterRef = useRef(null);
+  const dotRef = useRef(null);
+  const underlineRef = useRef(null);
 
   useEffect(() => {
     const overlay = overlayRef.current;
     const content = contentRef.current;
-    const mark = markRef.current;
+    const group = groupRef.current;
     const brandMask = brandMaskRef.current;
-    const subtitle = subtitleRef.current;
-    const barFill = barFillRef.current;
-    const counter = counterRef.current;
+    const dot = dotRef.current;
+    const underline = underlineRef.current;
+
+    // Prevent the intro timeline from stalling if the tab is backgrounded
+    // (throttled requestAnimationFrame) while it's still running.
+    gsap.ticker.lagSmoothing(0);
 
     const tl = gsap.timeline({ delay: 0.3 });
 
     tl.set(overlay, { scaleY: 1, transformOrigin: "top" })
-      .set(mark, { scale: 0, rotate: 0, opacity: 0 })
       .set(brandMask, { yPercent: 100 })
-      .set(subtitle, { opacity: 0, y: 6 })
-      .set(barFill, { scaleX: 0, transformOrigin: "left center" })
-      .set(counter, { innerText: 0 })
+      .set(dot, { scale: 0, opacity: 0 })
+      .set(underline, { scaleX: 0, transformOrigin: "left center" })
 
-      .to(mark, { scale: 1, rotate: 45, opacity: 1, duration: 0.7, ease: "back.out(1.7)" })
-      .to(brandMask, { yPercent: 0, duration: 0.9, ease: "power4.out" }, "-=0.15")
-      .to(subtitle, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, "-=0.1")
-      .to(
-        barFill,
-        { scaleX: 1, duration: 1.5, ease: "power1.inOut" },
-        "+=0.15"
-      )
-      .to(
-        counter,
-        {
-          innerText: 100,
-          duration: 1.5,
-          ease: "power1.inOut",
-          snap: { innerText: 1 },
-        },
-        "<"
-      )
-      .to({}, { duration: 0.5 })
-      .to([mark, brandMask, subtitle, barFill.parentElement.parentElement], {
-        opacity: 0,
-        y: -8,
-        duration: 0.5,
-        ease: "power2.in",
-      })
+      .to(brandMask, { yPercent: 0, duration: 0.8, ease: "power4.out" })
+      .to(dot, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, "-=0.3")
+      .to(underline, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, "-=0.15")
+      .to({}, { duration: 1 })
+      .to(group, { opacity: 0, y: -8, duration: 0.5, ease: "power2.in" })
       .to(
         overlay,
         {
@@ -72,6 +52,8 @@ export default function PageTransition({ children }) {
         { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", clearProps: "transform" },
         "-=0.4"
       );
+
+    return () => tl.kill();
   }, [pathname]);
 
   return (
@@ -83,39 +65,31 @@ export default function PageTransition({ children }) {
         style={{ transformOrigin: "top" }}
       >
         {/* Branding */}
-        <div className="flex flex-col items-center gap-4">
-          <span
-            ref={markRef}
-            className="w-3 h-3 bg-white inline-block"
-          />
-
-          <div className="flex flex-col items-center gap-2">
+        <div ref={groupRef} className="flex flex-col items-center gap-5">
+          <div className="flex items-start">
             <div className="overflow-hidden">
               <span
                 ref={brandMaskRef}
-                className="font-bebas text-white tracking-[0.5em] uppercase inline-block"
-                style={{ fontSize: "clamp(1rem, 3vw, 1.4rem)" }}
+                className="font-satoshi font-bold text-white inline-block leading-none"
+                style={{ fontSize: "clamp(1.75rem, 5vw, 2.75rem)" }}
               >
                 Mbi Ojong
               </span>
             </div>
             <span
-              ref={subtitleRef}
-              className="font-satoshi text-white/30 tracking-[0.3em] uppercase"
-              style={{ fontSize: "clamp(0.55rem, 1.2vw, 0.65rem)" }}
-            >
-              AML Investigation Analyst
-            </span>
+              ref={dotRef}
+              className="w-1.5 h-1.5 rounded-full bg-white mt-1 ml-0.5 shrink-0"
+            />
           </div>
 
-          {/* Progress bar + percentage */}
-          <div className="flex items-center gap-3 mt-2">
-            <div className="w-24 sm:w-32 h-px bg-white/15 overflow-hidden">
-              <div ref={barFillRef} className="h-full w-full bg-white" />
-            </div>
-            <span className="font-satoshi text-white/50 text-xs tabular-nums tracking-widest">
-              <span ref={counterRef}>00</span>%
-            </span>
+          <div className="w-40 sm:w-56 h-px bg-white/15 overflow-hidden">
+            <div ref={underlineRef} className="h-full w-full bg-white" />
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="loader-dot w-1.5 h-1.5 rounded-full bg-white/70" style={{ animationDelay: "0s" }} />
+            <span className="loader-dot w-1.5 h-1.5 rounded-full bg-white/70" style={{ animationDelay: "0.2s" }} />
+            <span className="loader-dot w-1.5 h-1.5 rounded-full bg-white/70" style={{ animationDelay: "0.4s" }} />
           </div>
         </div>
       </div>
